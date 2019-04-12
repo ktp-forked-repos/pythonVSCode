@@ -16,6 +16,7 @@ export namespace Diagnostics {
     export const lsNotSupported = localize('diagnostics.lsNotSupported', 'Your operating system does not meet the minimum requirements of the Language Server. Reverting to the alternative, Jedi.');
     export const invalidPythonPathInDebuggerSettings = localize('diagnostics.invalidPythonPathInDebuggerSettings', 'You need to select a Python interpreter before you start debugging.\n\nTip: click on "Select Python Interpreter" in the status bar.');
     export const invalidPythonPathInDebuggerLaunch = localize('diagnostics.invalidPythonPathInDebuggerLaunch', 'The Python path in your debug configuration is invalid.');
+    export const invalidTestSettings = localize('diagnostics.invalidTestSettings', 'Your settings needs to be updated to change the setting "python.unitTest." to "python.testing.", otherwise testing Python code using the extension may not work. Would you like to automatically update your settings now?');
 }
 
 export namespace Common {
