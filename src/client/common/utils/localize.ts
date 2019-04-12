@@ -20,6 +20,7 @@ export namespace Diagnostics {
 
 export namespace Common {
     export const canceled = localize('Common.canceled', 'Canceled');
+    export const gotIt = localize('Common.gotIt', 'Got it!');
     export const loadingExtension = localize('Common.loadingPythonExtension', 'Python extension loading...');
     export const openOutputPanel = localize('Common.openOutputPanel', 'Show output');
 }
@@ -44,6 +45,7 @@ export namespace Interpreters {
     export const refreshing = localize('Interpreters.RefreshingInterpreters', 'Refreshing Python Interpreters');
     export const doNotShowAgain = localize('Interpreters.doNotShowAgain', 'Do not show again');
     export const environmentPromptMessage = localize('Interpreters.environmentPromptMessage', 'We noticed a new virtual environment has been created. Do you want to select it for the workspace folder?');
+    export const selectInterpreterTip = localize('Interpreters.selectInterpreterTip', 'Tip: you can change the Python interpreter used by the Python extension by clicking on the Python version in the status bar');
 }
 
 export namespace Linters {
