@@ -94,6 +94,9 @@ steps:
           python uitests download
           npm install -g vsce
           python uitests install
+      env:
+          DISPLAY: :10
+          AgentJobName: $(Agent.JobName)
       displayName: "Download & Install UI Test Dependencies"
       condition: succeeded()
 
