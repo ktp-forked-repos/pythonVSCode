@@ -2,14 +2,16 @@
 # Licensed under the MIT License.
 
 import re
-import time
 from urllib.parse import quote
+
+import uitests.tools
 
 from . import core, quick_input, quick_open
 
 LINE_COLUMN_REGEX = re.compile("Ln (?P<line>\d+), Col (?P<col>\d+)")
 
 
+@uitests.tools.retry(TimeoutError)
 def open_file(context, filename):
     last_exception = None
     for _ in range(5):
