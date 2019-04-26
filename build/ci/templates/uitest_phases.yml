@@ -99,6 +99,7 @@ steps:
 
     - script: python uitests test -- --format=pretty $(Tags) -D python_path=$(CI_PYTHON_PATH)
       env:
+          DISPLAY: :10
           AgentJobName: $(Agent.JobName)
       failOnStderr: true
       displayName: "Run Tests"
