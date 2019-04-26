@@ -64,12 +64,6 @@ steps:
       condition: and(succeeded(), eq(variables['system.debug'], 'true'))
       displayName: Show Dependency Versions
 
-    - bash: |
-          python -m pip install -U pip
-          python -m pip --disable-pip-version-check install -t ./pythonFiles/lib/python --no-cache-dir --implementation py --no-deps --upgrade -r requirements.txt
-      displayName: "pip install requirements"
-      condition: succeeded()
-
     # https://code.visualstudio.com/api/working-with-extensions/continuous-integration#azure-pipelines
     - bash: |
           set -e
@@ -78,7 +72,6 @@ steps:
       displayName: "Start xvfb"
       condition: and(succeeded(), eq(variables['Agent.Os'], 'Linux'), not(variables['SkipXvfb']))
 
-    # Download VSIX
     - task: DownloadBuildArtifacts@0
       inputs:
           buildType: "current"
