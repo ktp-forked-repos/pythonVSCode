@@ -39,7 +39,7 @@ def retry(exceptions, tries=100, delay=0.1, backoff=1, logger=None):
                 except exceptions as e:
                     msg = "{}, Retrying in {} seconds...".format(e, mdelay)
                     if logger:
-                        logger.warning(msg)
+                        logger.info(msg)
                     else:
                         print(msg)
                     time.sleep(mdelay)

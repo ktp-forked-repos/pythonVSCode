@@ -47,6 +47,7 @@ def before_feature(context, feature):
         context.workspace_repo = None
 
 
+@uitests.tools.retry(PermissionError, tries=5)
 def before_scenario(context, scenario):
     # Restore `drive`, as behave will overwrite with original value.
     # Note, its possible we have a new driver instance due to reloading of VSC.
@@ -55,22 +56,17 @@ def before_scenario(context, scenario):
 
     # Restore python.pythonPath in user & workspace settings.
     settings_json = os.path.join(context.options.user_dir, "User", "settings.json")
-    # workspace_settings_json = os.path.join(
-    #     context.options.workspace_folder, ".vscode", "settings.json"
-    # )
+    # Sometimes, this throws a PermissionError error on windows.
+    # Hence retry.
     uitests.vscode.settings.update_settings(
         settings_json, {"python.pythonPath": context.options.python_path}
     )
-    # uitests.vscode.settings.update_settings(
-    #     workspace_settings_json, {"python.pythonPath": context.options.python_path}
-    # )
 
     # We want this open so it can get captured in screenshots.
     uitests.vscode.quick_open.select_command(context, "View: Show Explorer")
     uitests.vscode.startup.clear_everything(context)
     if "preserve.workspace" not in scenario.tags:
         uitests.vscode.startup.reset_workspace(context)
-        # uitests.vscode.startup.reload(context)
 
 
 def after_scenario(context, feature):

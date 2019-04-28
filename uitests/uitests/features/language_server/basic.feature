@@ -23,3 +23,4 @@ Feature: Language Server
         When I go to line 3
         And I select the command "Go to Definition"
         Then the cursor is on line 1
+        And take a screenshot

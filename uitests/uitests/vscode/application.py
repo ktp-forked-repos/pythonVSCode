@@ -97,12 +97,35 @@ def uninstall_extension(options):
 
 def install_extension(options):
     """Installs extensions into smoke tests copy of VSC."""
+    _set_permissions(options)
     uninstall_extension(options)
     bootstrap_extension = uitests.bootstrap.main.get_extension_path()
     _install_extension(options.extensions_dir, "bootstrap", bootstrap_extension)
     _install_extension(
         options.extensions_dir, "pythonExtension", options.extension_path
     )
+
+
+def _set_permissions(options):
+    # Set necessary permissions on Linux to be able to start.
+    # Else selenium throws errors.
+    # & so does VSC, when accessing vscode-ripgrep/bin/rg.
+    if sys.platform.startswith("linux"):
+        binary_location = _get_binary_location(options.executable_dir)
+        file_stat = os.stat(binary_location)
+        os.chmod(binary_location, file_stat.st_mode | stat.S_IEXEC)
+
+        rg_path = os.path.join(
+            os.path.dirname(binary_location),
+            "resources",
+            "app",
+            "node_modules.asar.unpacked",
+            "vscode-ripgrep",
+            "bin",
+            "rg",
+        )
+        file_stat = os.stat(rg_path)
+        os.chmod(rg_path, file_stat.st_mode | stat.S_IEXEC)
 
 
 def _install_extension(extensions_dir, extension_name, vsix):
@@ -136,25 +159,6 @@ def launch_extension(options):
         chrome_options.add_argument(arg)
 
     chrome_options.binary_location = _get_binary_location(options.executable_dir)
-    # Set necessary permissions on Linux to be able to start.
-    # Else selenium throws errors.
-    # & so does VSC, when accessing vscode-ripgrep/bin/rg.
-    if sys.platform.startswith("linux"):
-        file_stat = os.stat(chrome_options.binary_location)
-        os.chmod(chrome_options.binary_location, file_stat.st_mode | stat.S_IEXEC)
-
-        rg_path = os.path.join(
-            os.path.dirname(chrome_options.binary_location),
-            "resources",
-            "app",
-            "node_modules.asar.unpacked",
-            "vscode-ripgrep",
-            "bin",
-            "rg",
-        )
-        file_stat = os.stat(rg_path)
-        os.chmod(rg_path, file_stat.st_mode | stat.S_IEXEC)
-
     driver = webdriver.Chrome(options=chrome_options)
     return driver
 
