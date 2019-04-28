@@ -5,6 +5,7 @@
 import time
 
 # import uitests.tools
+import uitests.vscode.application
 
 from selenium.webdriver.common.keys import Keys
 from selenium.common import exceptions
