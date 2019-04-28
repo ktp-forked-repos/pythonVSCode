@@ -36,6 +36,7 @@ def after_all(context):
 
 @uitests.tools.retry((PermissionError, FileNotFoundError))
 def before_feature(context, feature):
+    uitests.vscode.startup.clear_everything(context)
     context.driver = uitests.vscode.startup.CONTEXT["driver"]
     repo = [tag for tag in feature.tags if tag.startswith("git://github.com/")]
     uitests.tools.empty_directory(context.options.workspace_folder)
