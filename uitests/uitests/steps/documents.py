@@ -67,7 +67,7 @@ def then_line(context, line_number):
 
 @behave.then("the cursor is on line {line_number:Number} and column {column:Number}")
 @uitests.tools.retry(AssertionError)
-def then_line(context, line_number, column):
+def then_line_and_column(context, line_number, column):
     value = uitests.vscode.documents.get_current_position(context)
     assert line_number == value[0]
     assert column == value[0]

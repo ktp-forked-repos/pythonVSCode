@@ -15,7 +15,7 @@ import progress.bar
 import requests
 
 
-def retry(exceptions, tries=100, delay=0.1, backoff=1, logger=None):
+def retry(exceptions, tries=100, delay=0.1, backoff=1):
     """
     Retry calling the decorated function using an exponential backoff.
     Original source from https://www.calazan.com/retry-decorator-for-python-3/
@@ -26,7 +26,6 @@ def retry(exceptions, tries=100, delay=0.1, backoff=1, logger=None):
         delay: Initial delay between retries in seconds.
         backoff: Backoff multiplier (e.g. value of 2 will double the delay
             each retry).
-        logger: Logger to use. If None, print.
     """
 
     def deco_retry(f):
@@ -38,10 +37,7 @@ def retry(exceptions, tries=100, delay=0.1, backoff=1, logger=None):
                     return f(*args, **kwargs)
                 except exceptions as e:
                     msg = "{}, Retrying in {} seconds...".format(e, mdelay)
-                    if logger:
-                        logger.info(msg)
-                    else:
-                        print(msg)
+                    logging.debug(msg)
                     time.sleep(mdelay)
                     mtries -= 1
                     mdelay *= backoff
