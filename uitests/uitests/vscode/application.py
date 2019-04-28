@@ -5,7 +5,6 @@
 import base64
 import contextlib
 import io
-import logging
 import os
 import os.path
 import shutil
@@ -141,7 +140,6 @@ def launch_extension(options):
     # Else selenium throws errors.
     # & so does VSC, when accessing vscode-ripgrep/bin/rg.
     if sys.platform.startswith("linux"):
-        logging.info(f"chmod u+x {chrome_options.binary_location}")
         file_stat = os.stat(chrome_options.binary_location)
         os.chmod(chrome_options.binary_location, file_stat.st_mode | stat.S_IEXEC)
 
@@ -154,7 +152,6 @@ def launch_extension(options):
             "bin",
             "rg",
         )
-        logging.info(f"chmod u+x {rg_path}")
         file_stat = os.stat(rg_path)
         os.chmod(rg_path, file_stat.st_mode | stat.S_IEXEC)
 
