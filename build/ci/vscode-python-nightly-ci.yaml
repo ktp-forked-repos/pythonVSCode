@@ -55,11 +55,11 @@ jobs:
         Tags: "--tags=smoke"
         Test: true
 
-    #   "Mac-Py3.7 Testing":
-    #     PythonVersion: "3.7"
-    #     VMImageName: "macos-10.13"
-    #     Tags: "--tags=test"
-    #     Test: true
+      "Mac-Py3.7 Testing":
+        PythonVersion: "3.7"
+        VMImageName: "macos-10.13"
+        Tags: "--tags=test"
+        Test: true
 
       "Win-Py3.7 Smoke":
         PythonVersion: "3.7"
@@ -67,16 +67,22 @@ jobs:
         Tags: "--tags=smoke"
         Test: true
 
-    #   "Win-Py3.7 Testing":
-    #     PythonVersion: "3.7"
-    #     VMImageName: 'vs2017-win2016'
-    #     Tags: "--tags=test"
-    #     Test: true
+      "Win-Py3.7 Testing":
+        PythonVersion: "3.7"
+        VMImageName: 'vs2017-win2016'
+        Tags: "--tags=test"
+        Test: true
 
       "Linux-Py3.7 Smoke":
         PythonVersion: "3.7"
         VMImageName: 'ubuntu-16.04'
         Tags: "--tags=smoke"
+        Test: true
+
+      "Linux-Py3.7 Testing":
+        PythonVersion: "3.7"
+        VMImageName: 'ubuntu-16.04'
+        Tags: "--tags=test"
         Test: true
 
       # "Mac-Py3.7 Testing":
@@ -269,6 +275,42 @@ jobs:
     #     Tags: "--tags=terminal"
     #     Test: true
     #     Pyenv: true
+
+      "Mac-Py2.7 Smoke":
+        PythonVersion: "2.7"
+        VMImageName: "macos-10.13"
+        Tags: "--tags=smoke"
+        Test: true
+
+      "Mac-Py2.7 Testing":
+        PythonVersion: "2.7"
+        VMImageName: "macos-10.13"
+        Tags: "--tags=test"
+        Test: true
+
+      "Win-Py2.7 Smoke":
+        PythonVersion: "2.7"
+        VMImageName: 'vs2017-win2016'
+        Tags: "--tags=smoke"
+        Test: true
+
+      "Win-Py2.7 Testing":
+        PythonVersion: "2.7"
+        VMImageName: 'vs2017-win2016'
+        Tags: "--tags=test"
+        Test: true
+
+      "Linux-Py2.7 Smoke":
+        PythonVersion: "2.7"
+        VMImageName: 'ubuntu-16.04'
+        Tags: "--tags=smoke"
+        Test: true
+
+      "Linux-Py2.7 Testing":
+        PythonVersion: "2.7"
+        VMImageName: 'ubuntu-16.04'
+        Tags: "--tags=test"
+        Test: true
 
   pool:
     vmImage: $(VMImageName)
