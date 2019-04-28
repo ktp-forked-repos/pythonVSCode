@@ -39,9 +39,9 @@ jobs:
     - template: templates/build.yml
 
 - job: Smoke
-  dependsOn:
-    - Compile
-    - Build
+#   dependsOn:
+#     - Compile
+#     - Build
   strategy:
     matrix:
       # Some tests need not be run on both Mac & Linux.
@@ -55,11 +55,11 @@ jobs:
         Tags: "--tags=smoke"
         Test: true
 
-      "Mac-Py3.7 Testing":
-        PythonVersion: "3.7"
-        VMImageName: "macos-10.13"
-        Tags: "--tags=test"
-        Test: true
+    #   "Mac-Py3.7 Testing":
+    #     PythonVersion: "3.7"
+    #     VMImageName: "macos-10.13"
+    #     Tags: "--tags=test"
+    #     Test: true
 
       "Win-Py3.7 Smoke":
         PythonVersion: "3.7"
@@ -67,11 +67,11 @@ jobs:
         Tags: "--tags=smoke"
         Test: true
 
-      "Win-Py3.7 Testing":
-        PythonVersion: "3.7"
-        VMImageName: 'vs2017-win2016'
-        Tags: "--tags=test"
-        Test: true
+    #   "Win-Py3.7 Testing":
+    #     PythonVersion: "3.7"
+    #     VMImageName: 'vs2017-win2016'
+    #     Tags: "--tags=test"
+    #     Test: true
 
       "Linux-Py3.7 Smoke":
         PythonVersion: "3.7"
@@ -112,37 +112,37 @@ jobs:
 #       Windows: true
 
       # Python 3.6
-      "Mac-Py3.6 Smoke":
-        PythonVersion: "3.6"
-        VMImageName: "macos-10.13"
-        TestsToRun: "UITests"
-        Tags: "--tags=smoke"
-        Test: true
-        Pyenv: true
+    #   "Mac-Py3.6 Smoke":
+    #     PythonVersion: "3.6"
+    #     VMImageName: "macos-10.13"
+    #     TestsToRun: "UITests"
+    #     Tags: "--tags=smoke"
+    #     Test: true
+    #     Pyenv: true
 
-      "Mac-Py3.6 Testing":
-        PythonVersion: "3.6"
-        VMImageName: 'vs2017-win2016'
-        TestsToRun: "UITests"
-        Tags: "--tags=test"
-        Test: true
-        Pyenv: true
+    #   "Mac-Py3.6 Testing":
+    #     PythonVersion: "3.6"
+    #     VMImageName: 'vs2017-win2016'
+    #     TestsToRun: "UITests"
+    #     Tags: "--tags=test"
+    #     Test: true
+    #     Pyenv: true
 
-      "Win-Py3.6 Smoke":
-        PythonVersion: "3.6"
-        VMImageName: 'vs2017-win2016'
-        TestsToRun: "UITests"
-        Tags: "--tags=smoke"
-        Test: true
-        Pyenv: true
+    #   "Win-Py3.6 Smoke":
+    #     PythonVersion: "3.6"
+    #     VMImageName: 'vs2017-win2016'
+    #     TestsToRun: "UITests"
+    #     Tags: "--tags=smoke"
+    #     Test: true
+    #     Pyenv: true
 
-      "Win-Py3.6 Testing":
-        PythonVersion: "3.6"
-        VMImageName: 'vs2017-win2016'
-        TestsToRun: "UITests"
-        Tags: "--tags=test"
-        Test: true
-        Pyenv: true
+    #   "Win-Py3.6 Testing":
+    #     PythonVersion: "3.6"
+    #     VMImageName: 'vs2017-win2016'
+    #     TestsToRun: "UITests"
+    #     Tags: "--tags=test"
+    #     Test: true
+    #     Pyenv: true
 
       # "Mac-Py3.6 Testing":
       #   PythonVersion: "3.6.8"
@@ -166,33 +166,33 @@ jobs:
     #     Pyenv: true
 
     # Python 3.5
-      "Mac-Py3.5 Smoke":
-        PythonVersion: "3.5"
-        VMImageName: "macos-10.13"
-        Tags: "--tags=smoke"
-        Test: true
-        Pyenv: true
+    #   "Mac-Py3.5 Smoke":
+    #     PythonVersion: "3.5"
+    #     VMImageName: "macos-10.13"
+    #     Tags: "--tags=smoke"
+    #     Test: true
+    #     Pyenv: true
 
-      "Mac-Py3.5 Testing":
-        PythonVersion: "3.5"
-        VMImageName: "macos-10.13"
-        Tags: "--tags=test"
-        Test: true
-        Pyenv: true
+    #   "Mac-Py3.5 Testing":
+    #     PythonVersion: "3.5"
+    #     VMImageName: "macos-10.13"
+    #     Tags: "--tags=test"
+    #     Test: true
+    #     Pyenv: true
 
-      "Win-Py3.5 Smoke":
-        PythonVersion: "3.5"
-        VMImageName: 'vs2017-win2016'
-        Tags: "--tags=smoke"
-        Test: true
-        Pyenv: true
+    #   "Win-Py3.5 Smoke":
+    #     PythonVersion: "3.5"
+    #     VMImageName: 'vs2017-win2016'
+    #     Tags: "--tags=smoke"
+    #     Test: true
+    #     Pyenv: true
 
-      "Win-Py3.5 Testing":
-        PythonVersion: "3.5"
-        VMImageName: 'vs2017-win2016'
-        Tags: "--tags=test"
-        Test: true
-        Pyenv: true
+    #   "Win-Py3.5 Testing":
+    #     PythonVersion: "3.5"
+    #     VMImageName: 'vs2017-win2016'
+    #     Tags: "--tags=test"
+    #     Test: true
+    #     Pyenv: true
 
       # "Mac-Py3.5 Testing":
       #   PythonVersion: "3.5.6"
@@ -218,33 +218,33 @@ jobs:
       #   Pyenv: true
 
     # Python 2.7
-      "Mac-Py2.7 Smoke":
-        PythonVersion: "2.7"
-        VMImageName: "macos-10.13"
-        Tags: "--tags=smoke"
-        Test: true
-        Pyenv: true
+    #   "Mac-Py2.7 Smoke":
+    #     PythonVersion: "2.7"
+    #     VMImageName: "macos-10.13"
+    #     Tags: "--tags=smoke"
+    #     Test: true
+    #     Pyenv: true
 
-      "Mac-Py2.7 Testing":
-        PythonVersion: "2.7"
-        VMImageName: "macos-10.13"
-        Tags: "--tags=test"
-        Test: true
-        Pyenv: true
+    #   "Mac-Py2.7 Testing":
+    #     PythonVersion: "2.7"
+    #     VMImageName: "macos-10.13"
+    #     Tags: "--tags=test"
+    #     Test: true
+    #     Pyenv: true
 
-      "Win-Py2.7 Smoke":
-        PythonVersion: "2.7"
-        VMImageName: 'vs2017-win2016'
-        Tags: "--tags=smoke"
-        Test: true
-        Pyenv: true
+    #   "Win-Py2.7 Smoke":
+    #     PythonVersion: "2.7"
+    #     VMImageName: 'vs2017-win2016'
+    #     Tags: "--tags=smoke"
+    #     Test: true
+    #     Pyenv: true
 
-      "Win-Py2.7 Testing":
-        PythonVersion: "2.7"
-        VMImageName: 'vs2017-win2016'
-        Tags: "--tags=test"
-        Test: true
-        Pyenv: true
+    #   "Win-Py2.7 Testing":
+    #     PythonVersion: "2.7"
+    #     VMImageName: 'vs2017-win2016'
+    #     Tags: "--tags=test"
+    #     Test: true
+    #     Pyenv: true
 
       # "Mac-Py2.7 Testing":
       #   PythonVersion: "2.7.16"

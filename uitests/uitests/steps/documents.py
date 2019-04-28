@@ -4,7 +4,6 @@
 import os.path
 
 import behave
-import time
 
 import uitests.vscode.documents
 import uitests.tools
@@ -42,14 +41,6 @@ def given_the_file_no_exist(context, name):
 @uitests.tools.retry(AssertionError)
 def then_file_exists(context, name):
     assert os.path.exists(os.path.join(context.options.workspace_folder, name))
-    # start_time = time.time()
-    # while (time.time() - start_time) < 5:
-    #     try:
-    #         assert os.path.exists(os.path.join(context.options.workspace_folder, name))
-    #         return
-    #     except Exception:
-    #         time.sleep(0.1)
-    # assert os.path.exists(os.path.join(context.options.workspace_folder, name))
 
 
 @behave.given('the file "{name}" is open')
@@ -58,7 +49,7 @@ def given_file_opened(context, name):
 
 
 @behave.then('the file "{name}" is opened')
-def given_file_opened(context, name):
+def then_file_opened(context, name):
     uitests.vscode.documents.is_file_open(context, name)
 
 

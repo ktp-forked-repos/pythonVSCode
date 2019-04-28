@@ -55,6 +55,12 @@ def get_options(
     pipenv_path=None,
 ):
     """Gets the options used for smoke tests."""
+    embed_screenshots = (
+        embed_screenshots == "True"
+        if type(embed_screenshots) is str
+        else embed_screenshots
+    )
+
     destination = os.path.abspath(destination)
     options = Options(
         os.path.join(destination, channel),
@@ -95,14 +101,19 @@ def install_extension(options):
     uninstall_extension(options)
     bootstrap_extension = uitests.bootstrap.main.get_extension_path()
     _install_extension(options.extensions_dir, "bootstrap", bootstrap_extension)
-    _install_extension(options.extensions_dir, "pythonExtension", options.extension_path)
+    _install_extension(
+        options.extensions_dir, "pythonExtension", options.extension_path
+    )
 
 
 def _install_extension(extensions_dir, extension_name, vsix):
     """Installs an extensions into smoke tests copy of VSC."""
     temp_dir = os.path.join(tempfile.gettempdir(), extension_name)
     uitests.tools.unzip_file(vsix, temp_dir)
-    shutil.copytree(os.path.join(temp_dir, "extension"), os.path.join(extensions_dir, extension_name))
+    shutil.copytree(
+        os.path.join(temp_dir, "extension"),
+        os.path.join(extensions_dir, extension_name),
+    )
     shutil.rmtree(temp_dir, ignore_errors=True)
 
 
@@ -128,10 +139,24 @@ def launch_extension(options):
     chrome_options.binary_location = _get_binary_location(options.executable_dir)
     # Set necessary permissions on Linux to be able to start.
     # Else selenium throws errors.
+    # & so does VSC, when accessing vscode-ripgrep/bin/rg.
     if sys.platform.startswith("linux"):
         logging.info(f"chmod u+x {chrome_options.binary_location}")
         file_stat = os.stat(chrome_options.binary_location)
         os.chmod(chrome_options.binary_location, file_stat.st_mode | stat.S_IEXEC)
+
+        rg_path = os.path.join(
+            os.path.dirname(chrome_options.binary_location),
+            "resources",
+            "app",
+            "node_modules.asar.unpacked",
+            "vscode-ripgrep",
+            "bin",
+            "rg",
+        )
+        logging.info(f"chmod u+x {rg_path}")
+        file_stat = os.stat(rg_path)
+        os.chmod(rg_path, file_stat.st_mode | stat.S_IEXEC)
 
     driver = webdriver.Chrome(options=chrome_options)
     return driver
@@ -218,4 +243,6 @@ def _get_cli_location(executable_directory):
     if sys.platform.startswith("win"):
         return os.path.join(executable_directory, "resources", "app", "out", "cli.js")
 
-    return os.path.join(executable_directory, "VSCode-linux-x64", "resources", "app", "out", "cli.js")
+    return os.path.join(
+        executable_directory, "VSCode-linux-x64", "resources", "app", "out", "cli.js"
+    )

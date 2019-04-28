@@ -18,7 +18,7 @@ Options:
   -C, --channel=CHANNEL         Defines the channel for VSC (stable or insiders) [default: stable].
   --vsix=VSIX                   Path to VSIX [default: ms-python-insiders.vsix].
   -O, --out=OUTPUT              Output for test results (console or file) [default: file].
-  --embed-screenshots           Whether to embed screenshots (applicable only when using --out=file).
+  --embed_screenshots           Whether to embed screenshots (applicable only when using --out=file).
   -L, --log=LEVEL               Log Level [default: INFO].
   --config=PATH                 Path to the config file [default: uitests/uitests/config.json]
   --show                        Whether to display the report or not.
@@ -104,12 +104,11 @@ def _update_junit_report(destination, **kwargs):
         xml.write()
 
 
-def test(
-    out, destination, channel, vsix, behave_options, embed_screenshots=False, **kwargs
-):
+def test(out, destination, channel, vsix, behave_options, embed_screenshots, **kwargs):
     """Start the smoke tests."""
     destination = os.path.abspath(destination)
     vsix = os.path.abspath(vsix)
+    embed_screenshots = False if embed_screenshots is None else embed_screenshots
     report_args = [
         "-f",
         "uitests.report:PrettyCucumberJSONFormatter",
@@ -135,6 +134,8 @@ def test(
         + [
             "--define",
             f"destination={destination}",
+            "--define",
+            f"embed_screenshots={embed_screenshots}",
             "--define",
             f"channel={channel}",
             "--define",

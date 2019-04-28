@@ -4,6 +4,8 @@
 
 import time
 
+# import uitests.tools
+
 from selenium.webdriver.common.keys import Keys
 from selenium.common import exceptions
 
@@ -47,7 +49,20 @@ def are_files_closed(context):
 
 def select_value(context, value, retry_count=5, **kwargs):
     element = _wait_until_opened(context, retry_count, **kwargs)
+    # uitests.vscode.application.capture_screen(context)
+    # if value.startswith("run_in"):
+    #     import time
+
+    #     time.sleep(1)
+    #     core.dispatch_keys(context.driver, "run", element=element)
+    #     time.sleep(1)
+    #     uitests.vscode.application.capture_screen(context)
+    #     core.dispatch_keys(context.driver, "_in_terminal", element=element)
+    #     uitests.vscode.application.capture_screen(context)
+    # else:
+    #     core.dispatch_keys(context.driver, value, element=element)
     core.dispatch_keys(context.driver, value, element=element)
+    uitests.vscode.application.capture_screen(context)
     core.dispatch_keys(context.driver, Keys.ENTER, element=element)
 
 

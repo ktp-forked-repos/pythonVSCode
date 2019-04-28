@@ -32,6 +32,11 @@ function activate(context) {
         const command = fs.readFileSync(path.join(__dirname, '..', 'commands.txt')).toString().trim();
         await vscode.window.activeTerminal.sendText(command, true);
     });
+    vscode.commands.registerCommand('smoketest.openFile', async () => {
+        const file = fs.readFileSync(path.join(__dirname, '..', 'commands.txt')).toString().trim();
+        const doc = await vscode.workspace.openTextDocument(file);
+        await vscode.window.showTextDocument(doc)
+    });
 }
 
 exports.activate = activate;

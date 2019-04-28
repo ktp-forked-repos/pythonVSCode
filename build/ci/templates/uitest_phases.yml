@@ -72,20 +72,20 @@ steps:
       displayName: "Start xvfb"
       condition: and(succeeded(), eq(variables['Agent.Os'], 'Linux'), not(variables['SkipXvfb']))
 
-    - task: DownloadBuildArtifacts@0
-      inputs:
-          buildType: "current"
-          artifactName: "VSIX"
-          downloadPath: "$(Build.SourcesDirectory)"
-      displayName: "Restore VSIX"
-      condition: succeeded()
+    # - task: DownloadBuildArtifacts@0
+    #   inputs:
+    #       buildType: "current"
+    #       artifactName: "VSIX"
+    #       downloadPath: "$(Build.SourcesDirectory)"
+    #   displayName: "Restore VSIX"
+    #   condition: succeeded()
 
-    - task: CopyFiles@2
-      inputs:
-          sourceFolder: "$(Build.SourcesDirectory)/VSIX"
-          targetFolder: $(Build.SourcesDirectory)
-      displayName: "Copy VSIX"
-      condition: succeeded()
+    # - task: CopyFiles@2
+    #   inputs:
+    #       sourceFolder: "$(Build.SourcesDirectory)/VSIX"
+    #       targetFolder: $(Build.SourcesDirectory)
+    #   displayName: "Copy VSIX"
+    #   condition: succeeded()
 
     # Run the UI Tests.
     - bash: |
@@ -100,7 +100,8 @@ steps:
       displayName: "Download & Install UI Test Dependencies"
       condition: succeeded()
 
-    - script: python uitests test -- --format=pretty $(Tags) -D python_path=$(CI_PYTHON_PATH)
+    - script: python uitests test --embed_screenshots -- --format=pretty $(Tags) -D python_path=$(CI_PYTHON_PATH)
+    # - script: python uitests test -- --format=pretty $(Tags) -D python_path=$(CI_PYTHON_PATH)
       env:
           DISPLAY: :10
           AgentJobName: $(Agent.JobName)
@@ -120,6 +121,19 @@ steps:
           contents: ".vscode-test/reports/**"
           targetFolder: $(Build.ArtifactStagingDirectory)
       displayName: "Copy Reports"
+      condition: always()
+
+    - task: CopyFiles@2
+      inputs:
+          contents: ".vscode-test/screenshots/**"
+          targetFolder: $(Build.ArtifactStagingDirectory)
+      displayName: "Copy Screenshots"
+      condition: always()
+
+    - bash: |
+          cd .vscode-test/screenshots
+          ls
+      displayName: "List"
       condition: always()
 
     - task: PublishBuildArtifacts@1

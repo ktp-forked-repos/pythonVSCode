@@ -37,6 +37,10 @@
             {
                 "command": "smoketest.runInTerminal",
                 "title": "Smoke: Run Command In Terminal"
+            },
+            {
+                "command": "smoketest.openFile",
+                "title": "Smoke: Open File"
             }
         ]
     }

@@ -6,13 +6,21 @@ Feature: Terminal
         And I select the default mac Interpreter
         Then a message with the text "You have selected the macOS system install of Python, which is not recommended for use with the Python extension. Some functionality will be limited, please select a different interpreter." is displayed
         And take a screenshot
-    @smoke
+    @smoke @smokes
     Scenario: Execute File in Terminal
         Given a file named "run_in_terminal.py" is created with the following contents
             """
             open("log.log", "w").write("Hello World")
             """
-        And the file "run_in_terminal.py" is open
+        # When I wait for 10 seconds
+        # Then take a screenshot
+        # Then show notifications
+        # Then take a screenshot
+        # When I wait for 10 seconds
+        # Then take a screenshot
+        # Then show notifications
+        Then take a screenshot
+        Given the file "run_in_terminal.py" is open
         And a file named "log.log" does not exist
         When I select the command "Python: Run Python File in Terminal"
         Then a file named "log.log" is created
