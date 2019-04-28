@@ -47,7 +47,7 @@ def before_feature(context, feature):
         context.workspace_repo = None
 
 
-@uitests.tools.retry(PermissionError, tries=5)
+@uitests.tools.retry((PermissionError, FileNotFoundError), tries=5)
 def before_scenario(context, scenario):
     # Restore `drive`, as behave will overwrite with original value.
     # Note, its possible we have a new driver instance due to reloading of VSC.
