@@ -80,17 +80,6 @@ def file_contains(context, name, value):
     with open(file_name, "r") as file:
         contents = file.read()
         assert value in contents
-    # start_time = time.time()
-    # file_name = os.path.join(context.options.workspace_folder, name)
-    # while (time.time() - start_time) < 10:
-    #     try:
-    #         with open(file_name, "r") as file:
-    #             contents = file.read()
-    #             assert value in contents
-    #             return
-    #     except AssertionError:
-    #         time.sleep(0.1)
-    # assert value in contents
 
 
 @behave.then('the file "{name}" does not contain the value "{value}"')
@@ -100,17 +89,6 @@ def file_not_contains(context, name, value):
     with open(file_name, "r") as file:
         contents = file.read()
         assert value not in contents
-    # start_time = time.time()
-    # file_name = os.path.join(context.options.workspace_folder, name)
-    # while (time.time() - start_time) < 10:
-    #     try:
-    #         with open(file_name, "r") as file:
-    #             contents = file.read()
-    #             assert value not in contents
-    #             return
-    #     except AssertionError:
-    #         time.sleep(0.1)
-    # assert value not in contents
 
 
 @behave.when('I open the file "{name}"')

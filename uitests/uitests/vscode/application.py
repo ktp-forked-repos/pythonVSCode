@@ -12,13 +12,13 @@ import stat
 import sys
 import tempfile
 import traceback
+from dataclasses import dataclass
 
 from selenium import webdriver
 
 import uitests.bootstrap
 import uitests.report
 import uitests.tools
-from dataclasses import dataclass
 
 from . import quick_open
 

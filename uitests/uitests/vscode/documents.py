@@ -1,12 +1,7 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-# import logging
-# import os
 import re
-
-# import sys
-# import time
 from urllib.parse import quote
 
 import uitests.tools
@@ -28,56 +23,6 @@ def open_file(context, filename):
     quick_open.select_value(context, filename)
     uitests.vscode.application.capture_screen(context)
     _wait_for_editor_focus(context, filename)
-
-    # if sys.platform.startswith("linux"):
-    #     filePath = os.path.join(context.options.workspace_folder, filename)
-    #     with open(
-    #         os.path.join(context.options.extensions_dir, "commands.txt"), "w"
-    #     ) as file:
-    #         file.write(filePath)
-    #     time.sleep(1)
-    #     uitests.vscode.application.capture_screen(context)
-    #     time.sleep(1)
-    #     uitests.vscode.quick_open.select_command(context, "Smoke: Open File")
-    #     time.sleep(1)
-    # else:
-    # try:
-    #     uitests.vscode.application.capture_screen(context)
-    #     quick_open.select_command(context, "Go to File...")
-    #     uitests.vscode.application.capture_screen(context)
-    #     quick_open.select_value(context, filename)
-    #     uitests.vscode.application.capture_screen(context)
-    #     _wait_for_editor_focus(context, filename)
-    # except Exception:
-    #     try:
-    #         logging.info("Show notifications1")
-    #         uitests.vscode.application.capture_screen(context)
-    #         uitests.vscode.quick_open.select_command(
-    #             context, "Notifications: Show Notifications"
-    #         )
-    #         logging.info("Show notifications2")
-    #         uitests.vscode.application.capture_screen(context)
-    #         # Ensure we select each notification before expanding them.
-    #         selector = ".notification-list-item-main-row"
-    #         elements = uitests.vscode.core.wait_for_elements(context.driver, selector)
-    #         logging.info("Show notifications3")
-    #         for element in elements:
-    #             logging.info("click 1")
-    #             element.click()
-    #             try:
-    #                 selector = ".notification-list-item-main-row .action-label.icon.expand-notification-action"
-    #                 eles = uitests.vscode.core.wait_for_elements(
-    #                     context.driver, selector
-    #                 )
-    #                 logging.info("Show notifications3")
-    #                 for ele in eles:
-    #                     logging.info("click 2")
-    #                     ele.click()
-    #             except Exception:
-    #                 pass
-    #         uitests.vscode.application.capture_screen(context)
-    #     except Exception:
-    #         import traceback
 
 
 def is_file_open(context, filename, **kwargs):
