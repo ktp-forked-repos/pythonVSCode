@@ -36,6 +36,8 @@ def after_all(context):
 
 @uitests.tools.retry((PermissionError, FileNotFoundError))
 def before_feature(context, feature):
+    # Restore `drive`, as behave will overwrite with original value.
+    # Note, its possible we have a new driver instance due to reloading of VSC.
     context.driver = uitests.vscode.startup.CONTEXT["driver"]
     uitests.vscode.startup.clear_everything(context)
     repo = [tag for tag in feature.tags if tag.startswith("git://github.com/")]
