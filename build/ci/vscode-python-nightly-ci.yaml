@@ -42,6 +42,7 @@ jobs:
 #   dependsOn:
 #     - Compile
 #     - Build
+  timeoutInMinutes: 90
   strategy:
     matrix:
       # Some tests need not be run on both Mac & Linux.
