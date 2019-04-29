@@ -35,7 +35,7 @@ def after_all(context):
     uitests.vscode.application.exit(context)
 
 
-@uitests.tools.retry((PermissionError, FileNotFoundError))
+@uitests.tools.retry((PermissionError, FileNotFoundError), tries=2)
 def before_feature(context, feature):
     # Restore `drive`, as behave will overwrite with original value.
     # Note, its possible we have a new driver instance due to reloading of VSC.
@@ -61,7 +61,7 @@ def before_feature(context, feature):
         uitests.vscode.startup.reload(context)
 
 
-@uitests.tools.retry((PermissionError, FileNotFoundError))
+@uitests.tools.retry((PermissionError, FileNotFoundError), tries=2)
 def before_scenario(context, scenario):
     # Restore `drive`, as behave will overwrite with original value.
     # Note, its possible we have a new driver instance due to reloading of VSC.
