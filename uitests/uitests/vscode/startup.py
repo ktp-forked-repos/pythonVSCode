@@ -2,17 +2,17 @@
 # Licensed under the MIT License.
 
 
+import contextlib
+import io
 import logging
 import os
 import os.path
 import time
-import contextlib
-import io
+from dataclasses import dataclass
 
 from selenium import webdriver
 
 import uitests.tools
-from dataclasses import dataclass
 
 from . import application, extension, quick_open, settings
 
