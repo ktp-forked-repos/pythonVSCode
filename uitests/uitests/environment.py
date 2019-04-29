@@ -48,6 +48,7 @@ def before_feature(context, feature):
         workspace_folder = context.options.workspace_folder
         context.options.workspace_folder = context.options.temp_folder
         uitests.vscode.startup.reload(context)
+        context.options.workspace_folder = workspace_folder
 
     repo = [tag for tag in feature.tags if tag.startswith("https://github.com/")]
     uitests.tools.empty_directory(context.options.workspace_folder)
@@ -60,7 +61,6 @@ def before_feature(context, feature):
         context.workspace_repo = None
 
     if sys.platform.startswith("win"):
-        context.options.workspace_folder = workspace_folder
         uitests.vscode.startup.reload(context)
 
 
@@ -89,11 +89,11 @@ def before_scenario(context, scenario):
             workspace_folder = context.options.workspace_folder
             context.options.workspace_folder = context.options.temp_folder
             uitests.vscode.startup.reload(context)
+            context.options.workspace_folder = workspace_folder
 
         uitests.vscode.startup.reset_workspace(context)
 
         if sys.platform.startswith("win"):
-            context.options.workspace_folder = workspace_folder
             uitests.vscode.startup.reload(context)
 
 
