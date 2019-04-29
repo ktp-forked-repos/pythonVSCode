@@ -2,6 +2,7 @@
 # Licensed under the MIT License.
 
 import os.path
+import sys
 
 import behave
 import parse
@@ -40,6 +41,12 @@ def before_feature(context, feature):
     # Note, its possible we have a new driver instance due to reloading of VSC.
     context.driver = uitests.vscode.startup.CONTEXT["driver"]
     uitests.vscode.startup.clear_everything(context)
+
+    # If on windows, close VSC perform necessary IO operations, then load VSC.
+    # Else we get all sorts of Access Denied errors...
+    if sys.platform.startswith("win"):
+        uitests.vscode.application.exit(context)
+
     repo = [tag for tag in feature.tags if tag.startswith("git://github.com/")]
     uitests.tools.empty_directory(context.options.workspace_folder)
     if repo:
@@ -50,6 +57,9 @@ def before_feature(context, feature):
     else:
         context.workspace_repo = None
 
+    if sys.platform.startswith("win"):
+        uitests.vscode.startup.reload(context)
+
 
 @uitests.tools.retry((PermissionError, FileNotFoundError))
 def before_scenario(context, scenario):
@@ -57,6 +67,11 @@ def before_scenario(context, scenario):
     # Note, its possible we have a new driver instance due to reloading of VSC.
     context.driver = uitests.vscode.startup.CONTEXT["driver"]
     context.options = uitests.vscode.application.get_options(**context.config.userdata)
+
+    # If on windows, close VSC perform necessary IO operations, then load VSC.
+    # Else we get all sorts of Access Denied errors...
+    if sys.platform.startswith("win"):
+        uitests.vscode.application.exit(context)
 
     # Restore python.pythonPath in user & workspace settings.
     settings_json = os.path.join(context.options.user_dir, "User", "settings.json")
@@ -71,6 +86,9 @@ def before_scenario(context, scenario):
     uitests.vscode.startup.clear_everything(context)
     if "preserve.workspace" not in scenario.tags:
         uitests.vscode.startup.reset_workspace(context)
+
+    if sys.platform.startswith("win"):
+        uitests.vscode.startup.reload(context)
 
 
 def after_scenario(context, feature):
