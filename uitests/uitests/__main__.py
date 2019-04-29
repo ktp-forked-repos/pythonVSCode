@@ -19,7 +19,7 @@ Options:
   --vsix=VSIX                   Path to VSIX [default: ms-python-insiders.vsix].
   -O, --out=OUTPUT              Output for test results (console or file) [default: file].
   --embed_screenshots           Whether to embed screenshots (applicable only when using --out=file).
-  -L, --log=LEVEL               Log Level [default: INFO].
+  -L, --log=LEVEL               Log Level [default: ERROR].
   --config=PATH                 Path to the config file [default: uitests/uitests/config.json]
   --show                        Whether to display the report or not.
   -T, --timeout=TIMEOUT         Timeout for closing instance of VSC when Launched to validate instance of VSC [default: 30]
