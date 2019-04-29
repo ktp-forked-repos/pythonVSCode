@@ -1,7 +1,6 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-import logging
 import os.path
 import sys
 
@@ -46,11 +45,8 @@ def before_feature(context, feature):
     # If on windows, close VSC perform necessary IO operations, then load VSC.
     # Else we get all sorts of Access Denied errors...
     if sys.platform.startswith("win"):
-        logging.info("exit")
         uitests.vscode.application.exit(context)
-        logging.info("after exit")
 
-    logging.info("empty")
     repo = [tag for tag in feature.tags if tag.startswith("git://github.com/")]
     uitests.tools.empty_directory(context.options.workspace_folder)
     if repo:
@@ -62,10 +58,8 @@ def before_feature(context, feature):
         context.workspace_repo = None
 
     if sys.platform.startswith("win"):
-        logging.info("reload")
         uitests.vscode.startup.reload(context)
         context.driver = uitests.vscode.startup.CONTEXT["driver"]
-        logging.info("after reload")
 
 
 @uitests.tools.retry((PermissionError, FileNotFoundError), tries=2)
@@ -78,9 +72,7 @@ def before_scenario(context, scenario):
     # If on windows, close VSC perform necessary IO operations, then load VSC.
     # Else we get all sorts of Access Denied errors...
     if sys.platform.startswith("win"):
-        logging.info("scenario exit")
         uitests.vscode.application.exit(context)
-        logging.info("after scenario exit")
 
     # Restore python.pythonPath in user & workspace settings.
     settings_json = os.path.join(context.options.user_dir, "User", "settings.json")
@@ -91,17 +83,12 @@ def before_scenario(context, scenario):
     )
 
     if sys.platform.startswith("win"):
-        logging.info("scenario reload")
         uitests.vscode.startup.reload(context)
         context.driver = uitests.vscode.startup.CONTEXT["driver"]
-        logging.info("after scenario reload")
 
     # We want this open so it can get captured in screenshots.
-    logging.info("scenario show explorer")
     uitests.vscode.quick_open.select_command(context, "View: Show Explorer")
-    logging.info("after scenario show explorer")
     uitests.vscode.startup.clear_everything(context)
-    logging.info("after scenario clear")
     if "preserve.workspace" not in scenario.tags:
         uitests.vscode.startup.reset_workspace(context)
 
