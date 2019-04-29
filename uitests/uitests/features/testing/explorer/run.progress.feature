@@ -1,5 +1,5 @@
 @test
-@git://github.com/DonJayamanne/pyvscSmokeTesting.git
+@https://github.com/DonJayamanne/pyvscSmokeTesting.git
 Feature: Test Explorer Running icons and stop running
     Scenario: When running tests, the nodes will have the progress icon and clicking stop will stop running (unitest)
         Given the workspace setting "python.testing.pyTestEnabled" is disabled

@@ -3,7 +3,6 @@
 
 import os.path
 import sys
-import logging
 
 import behave
 import parse
@@ -38,22 +37,19 @@ def after_all(context):
 
 @uitests.tools.retry((PermissionError, FileNotFoundError), tries=2)
 def before_feature(context, feature):
-    logging.info("before feature start")
     # Restore `drive`, as behave will overwrite with original value.
     # Note, its possible we have a new driver instance due to reloading of VSC.
     context.driver = uitests.vscode.startup.CONTEXT["driver"]
-    logging.info("before feature before clear")
     uitests.vscode.startup.clear_everything(context)
-    logging.info("before feature after clear")
 
     # If on windows, close VSC perform necessary IO operations, then load VSC.
     # Else we get all sorts of Access Denied errors...
     if sys.platform.startswith("win"):
-        logging.info("before feature before exit")
-        uitests.vscode.application.exit(context)
-        logging.info("before feature after exit")
+        workspace_folder = context.options.workspace_folder
+        context.options.workspace_folder = context.options.temp_folder
+        uitests.vscode.startup.reload(context)
 
-    repo = [tag for tag in feature.tags if tag.startswith("git://github.com/")]
+    repo = [tag for tag in feature.tags if tag.startswith("https://github.com/")]
     uitests.tools.empty_directory(context.options.workspace_folder)
     if repo:
         context.workspace_repo = repo[0]
@@ -64,26 +60,16 @@ def before_feature(context, feature):
         context.workspace_repo = None
 
     if sys.platform.startswith("win"):
-        logging.info("before feature before reload")
-        app_context = uitests.vscode.startup.reload(context)
-        context.driver = app_context.driver
-        logging.info("before feature after reload")
+        context.options.workspace_folder = workspace_folder
+        uitests.vscode.startup.reload(context)
 
 
 @uitests.tools.retry((PermissionError, FileNotFoundError), tries=2)
 def before_scenario(context, scenario):
-    logging.info("before scenario start")
     # Restore `drive`, as behave will overwrite with original value.
     # Note, its possible we have a new driver instance due to reloading of VSC.
     context.driver = uitests.vscode.startup.CONTEXT["driver"]
     context.options = uitests.vscode.application.get_options(**context.config.userdata)
-
-    # If on windows, close VSC perform necessary IO operations, then load VSC.
-    # Else we get all sorts of Access Denied errors...
-    if sys.platform.startswith("win"):
-        logging.info("before scenario before exit")
-        uitests.vscode.application.exit(context)
-        logging.info("before scenario after exit")
 
     # Restore python.pythonPath in user & workspace settings.
     settings_json = os.path.join(context.options.user_dir, "User", "settings.json")
@@ -93,32 +79,30 @@ def before_scenario(context, scenario):
         settings_json, {"python.pythonPath": context.options.python_path}
     )
 
-    if sys.platform.startswith("win"):
-        logging.info("before scenario before reload")
-        app_context = uitests.vscode.startup.reload(context)
-        context.driver = app_context.driver
-        logging.info("before scenario after reload")
-
     # We want this open so it can get captured in screenshots.
-    logging.info("before scenario before show explorer")
     uitests.vscode.quick_open.select_command(context, "View: Show Explorer")
     uitests.vscode.startup.clear_everything(context)
-    logging.info("before scenario after clear")
     if "preserve.workspace" not in scenario.tags:
+        # If on windows, close VSC perform necessary IO operations, then load VSC.
+        # Else we get all sorts of Access Denied errors...
+        if sys.platform.startswith("win"):
+            workspace_folder = context.options.workspace_folder
+            context.options.workspace_folder = context.options.temp_folder
+            uitests.vscode.startup.reload(context)
+
         uitests.vscode.startup.reset_workspace(context)
-    logging.info("before scenario end")
+
+        if sys.platform.startswith("win"):
+            context.options.workspace_folder = workspace_folder
+            uitests.vscode.startup.reload(context)
 
 
 def after_scenario(context, feature):
-    logging.info("after scenario start")
     context.driver = uitests.vscode.startup.CONTEXT["driver"]
     uitests.vscode.notifications.clear(context)
-    logging.info("after scenario end")
 
 
 def after_step(context, step):
-    logging.info("after step start")
     context.driver = uitests.vscode.startup.CONTEXT["driver"]
     if step.exception is not None:
         uitests.vscode.application.capture_screen(context)
-    logging.info("after step end")

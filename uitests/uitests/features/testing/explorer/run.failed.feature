@@ -1,5 +1,5 @@
 @test
-@git://github.com/DonJayamanne/pyvscSmokeTesting.git
+@https://github.com/DonJayamanne/pyvscSmokeTesting.git
 Feature: Test Explorer - Re-run Failed Tests
 
     Scenario: We are able to re-run a failed tests (unitest)

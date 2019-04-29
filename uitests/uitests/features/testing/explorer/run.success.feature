@@ -1,5 +1,5 @@
 @test
-@git://github.com/DonJayamanne/pyvscSmokeTesting.git
+@https://github.com/DonJayamanne/pyvscSmokeTesting.git
 Feature: Test Explorer Discovering icons and stop discovery
     Scenario: When running tests, the nodes will have the progress icon and when completed will have a success status (unitest)
         Given the workspace setting "python.testing.pyTestEnabled" is disabled

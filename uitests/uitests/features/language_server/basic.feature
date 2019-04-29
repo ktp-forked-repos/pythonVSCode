@@ -1,5 +1,5 @@
 @ls @smoke
-@git://github.com/DonJayamanne/pvscSmokeLS.git
+@https://github.com/DonJayamanne/pvscSmokeLS.git
 Feature: Language Server
     Scenario: Language Server loads and starts analyzing files
         Given the user setting "python.jediEnabled" is disabled

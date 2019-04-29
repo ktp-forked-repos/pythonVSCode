@@ -1,5 +1,5 @@
 @test
-@git://github.com/DonJayamanne/pyvscSmokeTesting.git
+@https://github.com/DonJayamanne/pyvscSmokeTesting.git
 Feature: Test Explorer
 
     Scenario: Explorer will be displayed when tests are discovered (unitest)
