@@ -170,6 +170,20 @@ def main():
         logging.basicConfig(level=log_level, format="%(message)s")
     else:
         logging.basicConfig(level=log_level)
+    root = logging.getLogger()
+    root.setLevel(log_level)
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    root.addHandler(handler)
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.INFO)
+    root.addHandler(handler)
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.WARN)
+    root.addHandler(handler)
+    handler = logging.StreamHandler(sys.stderr)
+    handler.setLevel(logging.ERROR)
+    root.addHandler(handler)
     options.setdefault("behave_options", behave_options)
     handler = lambda **kwargs: 0  # noqa
     if arguments.get("download"):
