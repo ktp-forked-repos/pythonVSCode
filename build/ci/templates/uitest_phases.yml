@@ -100,7 +100,7 @@ steps:
       displayName: "Download & Install UI Test Dependencies"
       condition: succeeded()
 
-    - script: python uitests test --embed_screenshots -- --format=progress $(Tags) -D python_path=$(CI_PYTHON_PATH)
+    - script: python uitests test --embed_screenshots -- $(Tags) -D python_path=$(CI_PYTHON_PATH)
       env:
           DISPLAY: :10
           AgentJobName: $(Agent.JobName)
