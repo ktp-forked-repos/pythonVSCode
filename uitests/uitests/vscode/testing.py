@@ -1,6 +1,7 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+import os.path
 import time
 
 from selenium.common.exceptions import StaleElementReferenceException
@@ -77,6 +78,9 @@ def get_node(context, number):
 
 
 def get_node_number(context, text):
+    # Node names can contain folder & file names delimited by path separator.
+    # Ensure we use the OS specific path separator.
+    text = text.replace("/", os.path.sep)
     nodes = _get_node_labels(context)
     return nodes.index(text) + 1
 

@@ -12,13 +12,6 @@ Feature: Terminal
             """
             open("log.log", "w").write("Hello World")
             """
-        # When I wait for 10 seconds
-        # Then take a screenshot
-        # Then show notifications
-        # Then take a screenshot
-        # When I wait for 10 seconds
-        # Then take a screenshot
-        # Then show notifications
         Then take a screenshot
         Given the file "run_in_terminal.py" is open
         And a file named "log.log" does not exist
