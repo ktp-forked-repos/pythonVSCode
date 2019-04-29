@@ -54,10 +54,10 @@ def _start_vscode(options):
 
 def reload(context):
     logging.debug("Reloading VS Code")
-    application.exit(context)
     # Ignore all messages written to console.
     with contextlib.redirect_stdout(io.StringIO()):
         with contextlib.redirect_stderr(io.StringIO()):
+            application.exit(context)
             app_context = launch(context.options)
     context.driver = app_context.driver
     CONTEXT["driver"] = context.driver

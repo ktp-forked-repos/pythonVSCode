@@ -20,7 +20,7 @@ import uitests.bootstrap
 import uitests.report
 import uitests.tools
 
-from . import quick_open
+# from . import quick_open
 
 
 @dataclass
@@ -167,10 +167,10 @@ def exit(context):
     # Ignore all messages written to console.
     with contextlib.redirect_stdout(io.StringIO()):
         with contextlib.redirect_stderr(io.StringIO()):
-            try:
-                quick_open.select_command(context, "Close Window")
-            except Exception:
-                pass
+            # try:
+            #     quick_open.select_command(context, "Close Window")
+            # except Exception:
+            #     pass
             try:
                 context.driver.close()
             except Exception:
