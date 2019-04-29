@@ -81,14 +81,14 @@ def before_scenario(context, scenario):
         settings_json, {"python.pythonPath": context.options.python_path}
     )
 
+    if sys.platform.startswith("win"):
+        uitests.vscode.startup.reload(context)
+
     # We want this open so it can get captured in screenshots.
     uitests.vscode.quick_open.select_command(context, "View: Show Explorer")
     uitests.vscode.startup.clear_everything(context)
     if "preserve.workspace" not in scenario.tags:
         uitests.vscode.startup.reset_workspace(context)
-
-    if sys.platform.startswith("win"):
-        uitests.vscode.startup.reload(context)
 
 
 def after_scenario(context, feature):
