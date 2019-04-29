@@ -58,8 +58,8 @@ def before_feature(context, feature):
         context.workspace_repo = None
 
     if sys.platform.startswith("win"):
-        uitests.vscode.startup.reload(context)
-        context.driver = uitests.vscode.startup.CONTEXT["driver"]
+        app_context = uitests.vscode.startup.reload(context)
+        context.driver = app_context.driver
 
 
 @uitests.tools.retry((PermissionError, FileNotFoundError), tries=2)
@@ -83,8 +83,8 @@ def before_scenario(context, scenario):
     )
 
     if sys.platform.startswith("win"):
-        uitests.vscode.startup.reload(context)
-        context.driver = uitests.vscode.startup.CONTEXT["driver"]
+        app_context = uitests.vscode.startup.reload(context)
+        context.driver = app_context.driver
 
     # We want this open so it can get captured in screenshots.
     uitests.vscode.quick_open.select_command(context, "View: Show Explorer")
