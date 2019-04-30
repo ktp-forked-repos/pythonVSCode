@@ -213,7 +213,6 @@ def capture_exception(context, info=None):
 
 
 def _get_binary_location(executable_directory):
-    # TODO: Not completed
     if sys.platform.startswith("darwin"):
         return os.path.join(
             executable_directory,

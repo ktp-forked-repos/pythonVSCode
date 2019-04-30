@@ -110,11 +110,15 @@ def setup_workspace(context, source_repo=None):
     context.workspace_repo = source_repo
     if source_repo is None:
         if sys.platform.startswith("win"):
+            try:
+                uitests.tools.empty_directory(context.options.temp_folder)
+            except (PermissionError, FileNotFoundError):
+                pass
             # On windows, create a new folder everytime.
             # Deleting/reverting changes doesn't work too well.
             # We get a number of access denied errors (files are in use).
-            workspace_folder_name = tempfile.NamedTemporaryFile(
-                prefix="workspace folder "
+            workspace_folder_name = os.path.basename(
+                tempfile.NamedTemporaryFile(prefix="workspace folder ").name
             )
             context.options.workspace_folder = os.path.join(
                 context.options.temp_folder, workspace_folder_name
@@ -134,7 +138,13 @@ def setup_workspace(context, source_repo=None):
         # On windows, create a new folder everytime.
         # Deleting/reverting changes doesn't work too well.
         # We get a number of access denied errors (files are in use).
-        workspace_folder_name = tempfile.NamedTemporaryFile(prefix="workspace folder ")
+        try:
+            uitests.tools.empty_directory(context.options.temp_folder)
+        except (PermissionError, FileNotFoundError):
+            pass
+        workspace_folder_name = os.path.basename(
+            tempfile.NamedTemporaryFile(prefix="workspace folder ").name
+        )
         context.options.workspace_folder = os.path.join(
             context.options.temp_folder, workspace_folder_name
         )

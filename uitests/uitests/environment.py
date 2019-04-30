@@ -50,7 +50,7 @@ def before_feature(context, feature):
     # On windows, always reload, as we'll have a new worksapce folder for every feature.
     # If we have a repo, then we might have a new workspace folder, so just reload.
     # Can optimize later (for non-windows).
-    if sys.platform.startswith("win") or repo:
+    if sys.platform.startswith("darwin") or repo:
         uitests.vscode.startup.reload(context)
 
 
