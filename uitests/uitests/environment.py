@@ -42,25 +42,15 @@ def before_feature(context, feature):
     context.driver = uitests.vscode.startup.CONTEXT["driver"]
     uitests.vscode.startup.clear_everything(context)
 
-    # If on windows, close VSC perform necessary IO operations, then load VSC.
-    # Else we get all sorts of Access Denied errors...
-    if sys.platform.startswith("win"):
-        workspace_folder = context.options.workspace_folder
-        context.options.workspace_folder = context.options.temp_folder
-        uitests.vscode.startup.reload(context)
-        context.options.workspace_folder = workspace_folder
+    repo = [
+        tag for tag in feature.tags if tag.lower().startswith("https://github.com/")
+    ]
+    uitests.vscode.startup.setup_workspace(context, repo[0] if repo else None)
 
-    repo = [tag for tag in feature.tags if tag.startswith("https://github.com/")]
-    uitests.tools.empty_directory(context.options.workspace_folder)
-    if repo:
-        context.workspace_repo = repo[0]
-        uitests.vscode.startup.setup_workspace(
-            repo[0], context.options.workspace_folder, context.options.temp_folder
-        )
-    else:
-        context.workspace_repo = None
-
-    if sys.platform.startswith("win"):
+    # On windows, always reload, as we'll have a new worksapce folder for every feature.
+    # If we have a repo, then we might have a new workspace folder, so just reload.
+    # Can optimize later (for non-windows).
+    if sys.platform.startswith("win") or repo:
         uitests.vscode.startup.reload(context)
 
 
@@ -73,8 +63,7 @@ def before_scenario(context, scenario):
 
     # Restore python.pythonPath in user & workspace settings.
     settings_json = os.path.join(context.options.user_dir, "User", "settings.json")
-    # Sometimes, this throws a PermissionError error on windows.
-    # Hence retry.
+
     uitests.vscode.settings.update_settings(
         settings_json, {"python.pythonPath": context.options.python_path}
     )
@@ -83,16 +72,9 @@ def before_scenario(context, scenario):
     uitests.vscode.quick_open.select_command(context, "View: Show Explorer")
     uitests.vscode.startup.clear_everything(context)
     if "preserve.workspace" not in scenario.tags:
-        # If on windows, close VSC perform necessary IO operations, then load VSC.
-        # Else we get all sorts of Access Denied errors...
-        if sys.platform.startswith("win"):
-            workspace_folder = context.options.workspace_folder
-            context.options.workspace_folder = context.options.temp_folder
-            uitests.vscode.startup.reload(context)
-            context.options.workspace_folder = workspace_folder
-
         uitests.vscode.startup.reset_workspace(context)
 
+        # On windows, always reload, as we create a new workspace folder.
         if sys.platform.startswith("win"):
             uitests.vscode.startup.reload(context)
 

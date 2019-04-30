@@ -7,7 +7,9 @@ import io
 import logging
 import os
 import os.path
+import tempfile
 import time
+import sys
 from dataclasses import dataclass
 
 from selenium import webdriver
@@ -75,30 +77,96 @@ def clear_everything(context):
 
 
 def reset_workspace(context):
-    workspace_folder = context.options.workspace_folder
-    if getattr(context, "workspace_repo", None) is None:
-        uitests.tools.empty_directory(workspace_folder)
+    if sys.platform.startswith("win"):
+        # On windows, create a new folder everytime.
+        # Deleting/reverting changes doesn't work too well.
+        # We get a number of access denied errors (files are in use).
+        setup_workspace(context, getattr(context, "workspace_repo", None))
+        workspace_folder = context.options.workspace_folder
     else:
-        logging.debug(f"Resetting workspace folder")
-        uitests.tools.run_command(
-            ["git", "reset", "--hard"], cwd=workspace_folder, silent=True
-        )
-        uitests.tools.run_command(
-            ["git", "clean", "-fd"], cwd=workspace_folder, silent=True
-        )
+        # On non-widows, just revert the changes made using git (easy).
+        workspace_folder = context.options.workspace_folder
+        if getattr(context, "workspace_repo", None) is None:
+            uitests.tools.empty_directory(workspace_folder)
+        else:
+            logging.debug(f"Resetting workspace folder")
+            uitests.tools.run_command(
+                ["git", "reset", "--hard"], cwd=workspace_folder, silent=True
+            )
+            uitests.tools.run_command(
+                ["git", "clean", "-fd"], cwd=workspace_folder, silent=True
+            )
 
     settings_json = os.path.join(workspace_folder, ".vscode", "settings.json")
     settings.update_settings(settings_json)
 
 
-def setup_workspace(source_repo, target, temp_folder):
+def setup_workspace(context, source_repo=None):
+    """
+    Set the workspace for a feature/scenario.
+    source_repo is either the github url of the repo to be used as the workspace folder.
+        Or it is None.
+    """
+    context.workspace_repo = source_repo
+    if source_repo is None:
+        if sys.platform.startswith("win"):
+            # On windows, create a new folder everytime.
+            # Deleting/reverting changes doesn't work too well.
+            # We get a number of access denied errors (files are in use).
+            workspace_folder_name = tempfile.NamedTemporaryFile(
+                prefix="workspace folder "
+            )
+            context.options.workspace_folder = os.path.join(
+                context.options.temp_folder, workspace_folder_name
+            )
+            os.makedirs(context.options.workspace_folder, exist_ok=True)
+            settings_json = os.path.join(
+                context.options.workspace_folder, ".vscode", "settings.json"
+            )
+            settings.update_settings(settings_json)
+        else:
+            uitests.tools.empty_directory(context.options.workspace_folder)
+        return
+
     logging.debug(f"Setting up workspace folder from {source_repo}")
-    uitests.tools.empty_directory(target)
-    uitests.tools.run_command(
-        ["git", "clone", source_repo, "."], cwd=target, silent=True
-    )
+
+    if sys.platform.startswith("win"):
+        # On windows, create a new folder everytime.
+        # Deleting/reverting changes doesn't work too well.
+        # We get a number of access denied errors (files are in use).
+        workspace_folder_name = tempfile.NamedTemporaryFile(prefix="workspace folder ")
+        context.options.workspace_folder = os.path.join(
+            context.options.temp_folder, workspace_folder_name
+        )
+        os.makedirs(context.options.workspace_folder, exist_ok=True)
+
+    # If on non-windows, just delete the files in current workspace.
+    uitests.tools.empty_directory(context.options.workspace_folder)
+    target = context.options.workspace_folder
+    repo_url = _get_repo_url(source_repo)
+    uitests.tools.run_command(["git", "clone", repo_url, "."], cwd=target, silent=True)
+
+    # Its possible source_repo is https://github.com/Microsoft/vscode-python/tree/master/build
+    # Meaning, we want to glon https://github.com/Microsoft/vscode-python
+    # and want the workspace folder to be tree/master/build when cloned.
+    if len(source_repo) > len(repo_url):
+        sub_directory = source_repo[len(repo_url) + 1]
+        context.options.workspace_folder = os.path.join(
+            context.options.workspace_folder, os.path.sep.join(sub_directory.split("/"))
+        )
+
     settings_json = os.path.join(target, ".vscode", "settings.json")
     settings.update_settings(settings_json)
+
+
+def _get_repo_url(source_repo):
+    """Will return the repo url ignoring any sub directories."""
+
+    repo_parts = source_repo[len("https://github.com/") :].split("/")
+    repo_name = (
+        repo_parts[1] if repo_parts[1].endswith(".git") else f"{repo_parts[1]}.git"
+    )
+    return f"https://github.com/{repo_parts[0]}/{repo_name}"
 
 
 def setup_user_settings(user_folder, **kwargs):
