@@ -149,11 +149,18 @@ def download_file(url, download_file, progress_message="Downloading"):  # noqa
 
 
 def empty_directory(dir):
+    # Ignore errors on windows.
     for root, dirs, files in os.walk(dir):
         for f in files:
-            os.unlink(os.path.join(root, f))
+            try:
+                os.unlink(os.path.join(root, f))
+            except Exception:
+                pass
         for d in dirs:
-            shutil.rmtree(os.path.join(root, d))
+            try:
+                shutil.rmtree(os.path.join(root, d))
+            except Exception:
+                pass
 
 
 def wait_for_python_env(cwd, path, timeout=30):
