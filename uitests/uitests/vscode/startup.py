@@ -112,7 +112,7 @@ def setup_workspace(context, source_repo=None):
         if sys.platform.startswith("win"):
             try:
                 uitests.tools.empty_directory(context.options.temp_folder)
-            except (PermissionError, FileNotFoundError):
+            except Exception:
                 pass
             # On windows, create a new folder everytime.
             # Deleting/reverting changes doesn't work too well.
@@ -140,7 +140,7 @@ def setup_workspace(context, source_repo=None):
         # We get a number of access denied errors (files are in use).
         try:
             uitests.tools.empty_directory(context.options.temp_folder)
-        except (PermissionError, FileNotFoundError):
+        except Exception:
             pass
         workspace_folder_name = os.path.basename(
             tempfile.NamedTemporaryFile(prefix="workspace folder ").name
