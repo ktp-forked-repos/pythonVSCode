@@ -40,7 +40,7 @@ export class MainPanel extends React.Component<IMainPanelProps, IMainPanelState>
     private updateCount = 0;
     private renderCount = 0;
     private editCellRef: Cell | null = null;
-    private mainPanel: HTMLDivElement | null = null;
+    private mainPanel: HTMLDivElement | null = null;<<
     private variableExplorerRef: React.RefObject<VariableExplorer>;
     private styleInjectorRef: React.RefObject<StyleInjector>;
     private currentExecutionCount: number = 0;
@@ -63,12 +63,8 @@ export class MainPanel extends React.Component<IMainPanelProps, IMainPanelState>
             submittedText: false,
             history: new InputHistory(),
             contentTop: 24,
-<<<<<<< HEAD
-            editCellVM: getSettings && getSettings().allowInput ? createEditableCellVM(1) : undefined
-=======
             editCellVM: getSettings && getSettings().allowInput ? createEditableCellVM(1) : undefined,
             editorOptions: this.computeEditorOptions()
->>>>>>> master
         };
 
         // Add test state if necessary
@@ -299,10 +295,7 @@ export class MainPanel extends React.Component<IMainPanelProps, IMainPanelState>
             <div className='edit-panel'>
                 <ErrorBoundary>
                     <Cell
-<<<<<<< HEAD
-=======
                         editorOptions={this.state.editorOptions}
->>>>>>> master
                         history={this.state.history}
                         maxTextSize={maxTextSize}
                         autoFocus={document.hasFocus()}
@@ -325,8 +318,6 @@ export class MainPanel extends React.Component<IMainPanelProps, IMainPanelState>
         );
     }
 
-<<<<<<< HEAD
-=======
     private computeEditorOptions() : monacoEditor.editor.IEditorOptions {
         const intellisenseOptions = getSettings().intellisenseOptions;
         if (intellisenseOptions) {
@@ -354,7 +345,6 @@ export class MainPanel extends React.Component<IMainPanelProps, IMainPanelState>
         return {};
     }
 
->>>>>>> master
     // Called by the header control when size changes (such as expanding variables)
     private onHeaderHeightChange = (newHeight: number) => {
         this.setState({contentTop: newHeight});
@@ -981,11 +971,6 @@ export class MainPanel extends React.Component<IMainPanelProps, IMainPanelState>
         }
     }
 
-<<<<<<< HEAD
-    private readOnlyCodeCreated = (text: string, file: string, id: string, monacoId: string) => {
-        // Pass this onto the completion provider running in the extension
-        this.sendMessage(HistoryMessages.AddCell, { text, file, id });
-=======
     private readOnlyCodeCreated = (_text: string, file: string, id: string, monacoId: string) => {
         const cell = this.state.cellVMs.find(c => c.cell.id === id);
         if (cell) {
@@ -997,7 +982,6 @@ export class MainPanel extends React.Component<IMainPanelProps, IMainPanelState>
                 id
             });
         }
->>>>>>> master
 
         // Save in our map of monaco id to cell id
         this.monacoIdToCellId.set(monacoId, id);

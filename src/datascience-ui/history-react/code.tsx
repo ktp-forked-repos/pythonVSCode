@@ -22,10 +22,7 @@ export interface ICodeProps {
     showWatermark: boolean;
     monacoTheme: string | undefined;
     outermostParentClass: string;
-<<<<<<< HEAD
-=======
     editorOptions: monacoEditor.editor.IEditorOptions;
->>>>>>> master
     onSubmit(code: string): void;
     onCreated(code: string, modelId: string): void;
     onChange(changes: monacoEditor.editor.IModelContentChange[], modelId: string): void;
@@ -88,13 +85,9 @@ export class Code extends React.Component<ICodeProps, ICodeState> {
             hideCursorInOverviewRuler: true,
             folding: false,
             readOnly: readOnly,
-<<<<<<< HEAD
-            lineDecorationsWidth: 0
-=======
             lineDecorationsWidth: 0,
             contextmenu: false,
             ...this.props.editorOptions
->>>>>>> master
         };
 
         return (
