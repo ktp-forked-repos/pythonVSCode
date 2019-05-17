@@ -96,5 +96,5 @@ jobs:
   parameters:
     jobs:
     - test: "Smoke"
-      tags: "--tags=@smoke --tags=@wip"
+      tags: "--tags=@smoke"
       ignorePythonVersions: "3.6,3.5"

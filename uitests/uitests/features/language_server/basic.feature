@@ -7,6 +7,7 @@ Feature: Language Server
         And I select the command "Python: Show Output"
         Then the output panel contains the text "Microsoft Python Language Server"
         And the output panel contains the text "Initializing for"
+        And take a screenshot
 
     Scenario: Navigate to definition of a variable
         Given the user setting "python.jediEnabled" is disabled
