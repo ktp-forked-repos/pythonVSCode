@@ -16,8 +16,8 @@ def get_screen_text(context):
     image_file = uitests.vscode.application.capture_screen_to_file(context)
 
     # Get endpoint and key from environment variables
-    endpoint = os.getenv("AZURE_COGNITIVE_ENDPOINT", "https://westus.api.cognitive.microsoft.com/")
-    key = os.getenv("AZURE_COGNITIVE_KEY", "35d491860aa24a3bb002359f2041d373")
+    endpoint = os.getenv("AZURE_COGNITIVE_ENDPOINT")
+    key = os.getenv("AZURE_COGNITIVE_KEY")
 
     # Set credentials
     credentials = CognitiveServicesCredentials(key)
