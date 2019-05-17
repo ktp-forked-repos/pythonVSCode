@@ -1,5 +1,5 @@
 @terminal @terminal.conda
-@wip
+@skip
 @https://github.com/DonJayamanne/vscode-python-uitests/terminal/execution
 Feature: Terminal (conda)
     Scenario: Interpreter display name contains the name of the environment and conda
