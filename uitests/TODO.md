@@ -4,3 +4,6 @@
     * [ ] Identify whats wrong and file an issue upstream on Python if required.
     * [ ] Use node.js as alternative
 * [ ] Unzip using Python code
+* [ ] Conda on Azure Pipelines don't work as the `environments.txt` file is not available/not updated.
+    * Is this the case in realworld?
+    * We need a fix/work around.
