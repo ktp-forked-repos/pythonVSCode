@@ -211,6 +211,14 @@ def capture_screen(context):
         uitests.report.PrettyCucumberJSONFormatter.instance.attach_html(html)
 
 
+def capture_screen_to_file(context):
+    filename = tempfile.NamedTemporaryFile(prefix="screen_capture_")
+    filename = f"{os.path.basename(filename.name)}.png"
+    filename = os.path.join(context.options.screenshots_dir, filename)
+    context.driver.save_screenshot(filename)
+    return filename
+
+
 def capture_exception(context, info=None):
     if info is None or info.exc_traceback is None or info.exception is None:
         return

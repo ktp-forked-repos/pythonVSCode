@@ -129,6 +129,8 @@ steps:
       env:
           DISPLAY: :10
           AgentJobName: $(Agent.JobName)
+          AZURE_COGNITIVE_ENDPOINT: $(AZURE_COGNITIVE_ENDPOINT)
+          AZURE_COGNITIVE_KEY: $(AZURE_COGNITIVE_KEY)
       failOnStderr: true
       displayName: "Run Tests"
       condition: succeeded()

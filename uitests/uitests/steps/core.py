@@ -113,3 +113,9 @@ def log_message(context, message):
 @behave.then("take a screenshot")
 def capture_screen(context):
     uitests.vscode.application.capture_screen(context)
+
+
+@behave.then('the text "{text}" is displayed in the Interactive Window')
+def text_on_screen(context, text):
+    text_on_screen = uitests.vscode.screen.get_screen_text(context)
+    assert text in text_on_screen

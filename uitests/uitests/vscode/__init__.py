@@ -8,6 +8,7 @@ from . import (  # noqa
     documents,
     download,
     extension,
+    screen,
     notifications,
     output_panel,
     quick_input,
