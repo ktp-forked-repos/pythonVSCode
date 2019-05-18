@@ -118,4 +118,5 @@ def capture_screen(context):
 @behave.then('the text "{text}" is displayed in the Interactive Window')
 def text_on_screen(context, text):
     text_on_screen = uitests.vscode.screen.get_screen_text(context)
-    assert text in text_on_screen
+    if text not in text_on_screen:
+        raise SystemError(f"{text} not found in {text_on_screen}")
