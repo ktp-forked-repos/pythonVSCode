@@ -3,6 +3,7 @@
 Feature: Data Science
     Scenario: Can display an image and print text into the interactive window
         Given the package "jupyter" is installed
+        And the workspace setting "editor.fontSize" is "15"
         And the file "smoke.py" is open
         # Code will display an image and print stuff into interactive window.
         When I select the command "Python: Run All Cells"
