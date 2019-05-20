@@ -55,6 +55,15 @@ def get_current_position(context):
     return int(match.group("line")), int(match.group("col"))
 
 
+def send_text_to_editor(context, filename, text):
+    """Send text to the editor."""
+    selector = (
+        f'.monaco-editor[data-uri$="{quote(filename)}"] textarea'
+    )
+    element = core.wait_for_element(context.driver, selector)
+    core.dispatch_keys(context.driver, text, element=element)
+
+
 def _wait_for_active_tab(context, filename, is_dirty=False):
     """Wait till a tab is active with the given file name."""
     dirty_class = ".dirty" if is_dirty else ""

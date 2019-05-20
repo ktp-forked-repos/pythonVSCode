@@ -213,7 +213,7 @@
                 "--",
                 "--format",
                 "progress3",
-                "--tags=wip"
+                "--tags=@wip"
             ],
             "justMyCode": false,
             "console": "internalConsole"

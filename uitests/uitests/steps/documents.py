@@ -99,3 +99,14 @@ def when_file_opened(context, name):
 @behave.then('open the file "{name}"')
 def then_open_file(context, name):
     uitests.vscode.documents.open_file(context, name)
+
+
+@behave.when('I create an untitled Python file with the following text')
+def create_untitled_python_file(context):
+    create_new_python_file(context)
+
+
+@behave.when('I create an new Python file with the following text')
+def create_new_python_file(context):
+    uitests.vscode.documents.create_new_untitled_file(context)
+    uitests.vscode.documents.send_text_to_editor(context, 'Untitled-1', context.text)

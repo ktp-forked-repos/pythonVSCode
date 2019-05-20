@@ -3,55 +3,44 @@
 
 import os
 
-from azure.cognitiveservices.vision.computervision import ComputerVisionClient
-from azure.cognitiveservices.vision.computervision.models import (
-    TextOperationStatusCodes, TextRecognitionMode, VisualFeatureTypes)
-from msrest.authentication import CognitiveServicesCredentials
+import requests
 
 import uitests.vscode.application
 from uitests.tools import retry
 
 
 def get_screen_text(context):
+    """Gets the text from the current VSC screen."""
+
     image_file = uitests.vscode.application.capture_screen_to_file(context)
 
     # Get endpoint and key from environment variables
     endpoint = os.getenv("AZURE_COGNITIVE_ENDPOINT")
-    key = os.getenv("AZURE_COGNITIVE_KEY")
-
-    # Set credentials
-    credentials = CognitiveServicesCredentials(key)
-
-    # Create client
-    client = ComputerVisionClient(endpoint, credentials)
-    mode = TextRecognitionMode.printed
-    raw = True
-    custom_headers = None
-    numberOfCharsInOperationId = 36
-
-    # Async SDK call
-    with open(image_file, "rb") as fp:
-        rawHttpResponse = client.batch_read_file_in_stream(fp, mode, custom_headers,  raw)
-
-    # Get ID from returned headers
-    operationLocation = rawHttpResponse.headers["Operation-Location"]
-    idLocation = len(operationLocation) - numberOfCharsInOperationId
-    operationId = operationLocation[idLocation:]
+    subscription_key = os.getenv("AZURE_COGNITIVE_KEY")
+    ocr_url = f"{endpoint}vision/v2.0/ocr"
 
     @retry(ConnectionError, tries=10, backoff=2)
     def get_result():
-        result = client.get_read_operation_result(operationId)
-        if result.status not in ['NotStarted', 'Running']:
-            return result
-        raise ConnectionError
+        headers = {
+            "Ocp-Apim-Subscription-Key": subscription_key,
+            "Content-Type": "application/octet-stream",
+        }
+        params = {"language": "unk", "detectOrientation": "true"}
+
+        with open(image_file, "rb") as fp:
+            response = requests.post(ocr_url, headers=headers, data=fp.read())
+
+        response.raise_for_status()
+        return response.json()
 
     result = get_result()
 
-    # Get data
-    if result.status == TextOperationStatusCodes.succeeded:
-        return os.linesep.join(line.text for textResult in result.recognition_results for line in textResult.lines)
-        # for textResult in result.recognition_results:
-        #     for line in textResult.lines:
-        #         print(line.text)
-    else:
-        raise Exception(result)
+    # Extract the text.
+    line_infos = [region["lines"] for region in result["regions"]]
+    word_infos = []
+    for line in line_infos:
+        for word_metadata in line:
+            for word_info in word_metadata["words"]:
+                word_infos.append(word_info.get("text"))
+
+    return " ".join(word_infos)
