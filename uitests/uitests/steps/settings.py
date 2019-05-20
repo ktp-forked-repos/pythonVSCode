@@ -13,6 +13,11 @@ def given_workspace_setting(context, name, value):
     uitests.vscode.settings.update_workspace_settings(context, {name: value})
 
 
+@behave.given('the workspace setting "{name}" has the value {value:Number}')
+def given_workspace_setting(context, name, value):
+    uitests.vscode.settings.update_workspace_settings(context, {name: value})
+
+
 @behave.given('the workspace setting "{name}" is enabled')
 def given_workspace_setting_enabled(context, name):
     uitests.vscode.settings.update_workspace_settings(context, {name: True})
