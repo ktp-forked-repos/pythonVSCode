@@ -1,5 +1,4 @@
 @ds @smoke
-@wip
 @https://github.com/DonJayamanne/vscode-python-uitests/datascience
 Feature: Data Science
     Scenario: Can display an image and print text into the interactive window
